@@ -2,6 +2,7 @@ module github.com/jirfag/go-queryset
 
 require (
 	cloud.google.com/go v0.37.0 // indirect
+	github.com/davecgh/go-spew v1.1.1
 	github.com/denisenkom/go-mssqldb v0.0.0-20190315220205-a8ed825ac853 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/go-sql-driver/mysql v0.0.0-20170822214809-26471af196a1 // indirect
@@ -17,3 +18,5 @@ require (
 	golang.org/x/tools v0.0.0-20190226205152-f727befe758c
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.2.0
 )
+
+go 1.13

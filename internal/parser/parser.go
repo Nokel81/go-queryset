@@ -11,6 +11,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/davecgh/go-spew/spew"
+
 	"github.com/pkg/errors"
 
 	"golang.org/x/tools/go/packages"
@@ -61,14 +63,22 @@ func (p Structs) ParseFile(ctx context.Context, filePath string) (*Result, error
 		return nil, errors.Wrap(err, "can't get struct names")
 	}
 
+	fmt.Println("~~~~~~~~~~")
+	spew.Dump(neededStructs)
+	fmt.Println("~~~~~~~~~~")
+
 	// need load the full package type info because
 	// some deps can be in other files
-	inPkgName := filepath.Dir(filePath)
+	inPkgName := filepath.Dir(absFilePath)
 	if !filepath.IsAbs(inPkgName) && !strings.HasPrefix(inPkgName, ".") {
 		// to make this dir name a local package name
 		// can't use filepath.Join because it calls Clean and removes "."+sep
 		inPkgName = fmt.Sprintf(".%c%s", filepath.Separator, inPkgName)
 	}
+
+	fmt.Println("~~~~~~~~~~")
+	fmt.Println(inPkgName)
+	fmt.Println("~~~~~~~~~~")
 
 	pkgs, err := packages.Load(&packages.Config{
 		Mode:    packages.LoadAllSyntax,
@@ -78,6 +88,10 @@ func (p Structs) ParseFile(ctx context.Context, filePath string) (*Result, error
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to load package for file %s", filePath)
 	}
+
+	fmt.Println("~~~~~~~~~~")
+	spew.Dump(pkgs)
+	fmt.Println("~~~~~~~~~~")
 
 	if len(pkgs) != 1 {
 		return nil, fmt.Errorf("got too many (%d) packages: %#v", len(pkgs), pkgs)

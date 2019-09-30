@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/jirfag/go-queryset/internal/parser"
 	"github.com/pkg/errors"
 	"golang.org/x/tools/imports"
@@ -20,10 +21,14 @@ type Generator struct {
 
 // Generate generates output file with querysets
 func (g Generator) Generate(ctx context.Context, inFilePath, outFilePath string) error {
+	fmt.Println(inFilePath, outFilePath)
+
 	parsedFile, err := g.StructsParser.ParseFile(ctx, inFilePath)
 	if err != nil {
 		return errors.Wrapf(err, "can't parse file %s to get structs", inFilePath)
 	}
+
+	spew.Dump(parsedFile)
 
 	var r io.Reader
 	r, err = GenerateQuerySetsForStructs(parsedFile.Types, parsedFile.Structs)
